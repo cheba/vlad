@@ -68,9 +68,6 @@ namespace :vlad do
     commands << "#{source.export revision, release_path}"
     commands << "chmod -R g+w #{latest_release}"
 
-    unless shared_paths.empty?
-      commands << "rm -rf #{shared_paths.values.map { |p| File.join(latest_release, p) }.join(' ')}"
-    end
     unless mkdirs.empty?
       dirs = mkdirs.map { |d| File.join(latest_release, d) }.join(' ')
       commands << "mkdir -p #{dirs}"
@@ -109,9 +106,12 @@ namespace :vlad do
   remote_task :update_symlinks, :roles => :app do
     unless shared_paths.empty?
       ops = shared_paths.map do |sp, rp|
-        "ln -s #{shared_path}/#{sp} #{latest_release}/#{rp}"
-      end
-      run ops.join(' && ') unless ops.empty?
+        [
+          "rm -rf #{current_release}/#{rp}",
+          "ln -s #{shared_path}/#{sp} #{current_release}/#{rp}"
+        ]
+      end.flatten
+      run ops.join(' && ')
     end
   end
 
