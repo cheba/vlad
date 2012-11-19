@@ -27,7 +27,7 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<rake-remote_task>, ["~> 2.0"])
       s.add_development_dependency(%q<hoe>, ["~> 2.12"])
     else
-      s.add_dependency(%q<rake>, ["~> 0.8"])
+      s.add_dependency(%q<rake>, [">= 0.8"])
       s.add_dependency(%q<rake-remote_task>, ["~> 2.0"])
       s.add_dependency(%q<hoe>, ["~> 2.12"])
     end
